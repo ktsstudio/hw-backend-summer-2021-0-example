@@ -1,0 +1,11 @@
+name: Check homework
+on: [push]
+jobs:
+  validate:
+    if: ${{ github.repository_owner != 'ktsstudio' }}
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: 'ktshub/backend-summer-2021:task-792ee3a9-4105-4b55-a712-59621ea3a4ff'
+    steps:
+      - uses: actions/checkout@main
+      - run: docker run --entrypoint /bin/bash --mount src="$(pwd)",target=/go/code/source,type=bind ${{ env.IMAGE }} -c "mv build/main source && cd source && ./main"
